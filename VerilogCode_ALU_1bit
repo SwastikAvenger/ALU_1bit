@@ -4,26 +4,20 @@ module ALU_OneBit(
       input A,input B,input Ci,input [1:0]sel,
       output reg Res,output reg Co
     );
-        wire w1, w2, w3, w4;
-        assign w1 = A&B;                //AND Operation
-        assign w2 = A|B;                //OR Operation
-        assign w3 = A^B^Ci;             //Sum Operation
-        assign w4 = (A&B)|(B&Ci)|(A&Ci);   //Carry Operation
-        
         //MUX Portion
-        always @ (A,B,Ci,sel) begin
+       always @* begin
         case (sel)
                 2'b00 : begin
-                            Res = w1;
+                            Res = A & B;
                             Co = 1'b0;
                         end
                 2'b01 :  begin
-                            Res = w2;
+                            Res = A | B;
                             Co = 1'b0;
                          end 
                 2'b10 :  begin 
-                            Res = w3;
-                            Co = w4;
+                            Res = A ^ B ^ Ci;
+                            Co = (A&B)|(B&Ci)|(A&Ci);
                          end
                 default : begin
                              Res = 1'b0;
